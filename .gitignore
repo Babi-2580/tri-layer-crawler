@@ -1,0 +1,7 @@
+﻿venv/
+venv_dark/
+frontend/node_modules/
+.env
+__pycache__/
+*.pyc
+exports/

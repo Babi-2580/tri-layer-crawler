@@ -1,0 +1,194 @@
+:root {
+  --bg-color: #050505;
+  --text-color: #00ff41;
+  --border-color: #00ff41;
+  --panel-bg: rgba(0, 255, 65, 0.05);
+  --font-family: 'Courier New', Courier, monospace;
+}
+
+[data-theme='light'] {
+  --bg-color: #f0f0f0;
+  --text-color: #222;
+  --border-color: #555;
+  --panel-bg: #fff;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-family);
+  transition: all 0.3s ease;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* CRT scanline overlay -- purely cosmetic, sits above content but ignores clicks */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 999;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  opacity: 0.35;
+}
+
+[data-theme='light'] body::before {
+  opacity: 0;
+}
+
+.terminal-wrapper {
+  max-width: 900px;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  text-shadow: 0 0 8px var(--text-color);
+  letter-spacing: 1px;
+}
+
+.theme-toggle, .execute-btn {
+  background: transparent;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  padding: 10px 15px;
+  font-family: var(--font-family);
+  cursor: pointer;
+  font-weight: bold;
+  transition: box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.theme-toggle:hover, .execute-btn:hover {
+  background: var(--text-color);
+  color: var(--bg-color);
+  box-shadow: 0 0 12px var(--text-color);
+}
+
+.control-panel {
+  border: 1px solid var(--border-color);
+  background: var(--panel-bg);
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.08);
+}
+
+[data-theme='light'] .control-panel {
+  box-shadow: none;
+}
+
+.input-group {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.multi-select {
+  flex-direction: row;
+  gap: 20px;
+}
+
+.multi-select > div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input, select, textarea {
+  background: transparent;
+  color: var(--text-color);
+  border: 1px dashed var(--border-color);
+  padding: 10px;
+  font-family: var(--font-family);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-style: solid;
+  background: rgba(0, 255, 65, 0.1);
+  box-shadow: 0 0 10px rgba(0, 255, 65, 0.25);
+}
+
+.execute-btn {
+  width: 100%;
+  margin-top: 10px;
+  font-size: 1.1em;
+}
+
+.output-stream {
+  border: 1px solid var(--border-color);
+  padding: 15px;
+  height: 250px;
+  overflow-y: auto;
+  background: #000;
+  box-shadow: inset 0 0 25px rgba(0, 255, 65, 0.06);
+}
+
+[data-theme='light'] .output-stream {
+  box-shadow: none;
+  background: #fafafa;
+}
+
+.output-stream h3 {
+  margin-top: 0;
+  border-bottom: 1px dashed var(--border-color);
+  padding-bottom: 5px;
+}
+
+.logs p {
+  margin: 5px 0;
+}
+
+/* Blinking terminal cursor, used after the boot-up log line */
+.blink-cursor::after {
+  content: "\2588";
+  margin-left: 2px;
+  animation: blink 1s step-start infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
